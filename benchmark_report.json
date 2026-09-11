@@ -1,0 +1,17 @@
+{
+  "Intron Sahara v2.5": {
+    "mean_wer": 0.0,
+    "clinical_entity_accuracy": 1.0,
+    "faas_score": 40.0
+  },
+  "OpenAI Whisper (Medium)": {
+    "mean_wer": 0.4174,
+    "clinical_entity_accuracy": 0.9167,
+    "faas_score": 3.42
+  },
+  "Meta Wav2Vec2 (XLS-R)": {
+    "mean_wer": 0.557,
+    "clinical_entity_accuracy": 0.8333,
+    "faas_score": 1.75
+  }
+}

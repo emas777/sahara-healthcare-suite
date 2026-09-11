@@ -693,7 +693,42 @@
     AfriHealth AI &bull; Prepared for the Sahara Code-Switch Africa Challenge &bull; Core Engine: Intron Sahara v2.5
   </footer>
 
-  <script>
+  <let audioContext;
+let mediaStream;
+let workletNode;
+
+async function startAudioStreaming(socket) {
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+    
+    await audioContext.audioWorklet.addModule('pcm-processor.js');
+    
+    const source = audioContext.createMediaStreamSource(mediaStream);
+    workletNode = new AudioWorkletNode(audioContext, 'pcm-processor');
+
+    workletNode.port.onmessage = (event) => {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(event.data);
+      }
+    };
+
+    source.connect(workletNode);
+    workletNode.connect(audioContext.destination);
+    console.log("Audio Worklet initialized successfully.");
+  } catch (err) {
+    console.error("Error setting up Audio Worklet:", err);
+  }
+}
+
+function stopAudioStreaming() {
+  if (mediaStream) {
+    mediaStream.getTracks().forEach(track => track.stop());
+  }
+  if (audioContext) {
+    audioContext.close();
+  }
+}script>
     let benchmarkChartInstance = null;
     let isRecordingTriage = false;
     let mediaRecorder = null;

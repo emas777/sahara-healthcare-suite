@@ -693,47 +693,74 @@
     AfriHealth AI &bull; Prepared for the Sahara Code-Switch Africa Challenge &bull; Core Engine: Intron Sahara v2.5
   </footer>
 
- 
-let mediaStream;
-let workletNode;
+<script>
+  let mediaStream = null;
+  let workletNode = null;
+  let websocket = null;
+  let audioContext = null;
 
-async function startAudioStreaming(socket) {
-  try {
-    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
-    
-    await audioContext.audioWorklet.addModule('pcm-processor.js');
-    
-    const source = audioContext.createMediaStreamSource(mediaStream);
-    workletNode = new AudioWorkletNode(audioContext, 'pcm-processor');
+  function initWebSocket() {
+    websocket = new WebSocket('ws://localhost:8000/ws/audio');
+    websocket.onopen = () => console.log('WebSocket connected');
+    websocket.onerror = (err) => console.error('WebSocket error:', err);
+    websocket.onclose = () => console.log('WebSocket closed');
+  }
 
-    workletNode.port.onmessage = (event) => {
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(event.data);
+  async function startAudioStreaming(socket) {
+    try {
+      if (!socket || socket.readyState !== WebSocket.OPEN) {
+        initWebSocket();
       }
-    };
 
-    source.connect(workletNode);
-    workletNode.connect(audioContext.destination);
-    console.log("Audio Worklet initialized successfully.");
-  } catch (err) {
-    console.error("Error setting up Audio Worklet:", err);
-  }
-}
+      mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+      
+      await audioContext.audioWorklet.addModule('pcm-processor.js');
+      
+      const source = audioContext.createMediaStreamSource(mediaStream);
+      workletNode = new AudioWorkletNode(audioContext, 'pcm-processor');
 
-function stopAudioStreaming() {
-  if (mediaStream) {
-    mediaStream.getTracks().forEach(track => track.stop());
+      workletNode.port.onmessage = (event) => {
+        if (websocket && websocket.readyState === WebSocket.OPEN) {
+          websocket.send(event.data);
+        }
+      };
+
+      source.connect(workletNode);
+      workletNode.connect(audioContext.destination);
+      console.log("Audio Worklet initialized successfully.");
+    } catch (err) {
+      console.error("Error setting up Audio Worklet:", err);
+    }
   }
-  if (audioContext) {
-    audioContext.close();
+
+  function stopAudioStreaming() {
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(track => track.stop());
+      mediaStream = null;
+    }
+    if (audioContext) {
+      audioContext.close();
+      audioContext = null;
+    }
   }
-}script>
-   let audioContext;
-   let benchmarkChartInstance = null;
-    let isRecordingTriage = false;
-    let mediaRecorder = null;
-    let audioChunks = [];
+  let benchmarkChartInstance = null;
+  let isRecordingTriage = false;
+
+  async function toggleTriageRecord() {
+    const btn = document.getElementById('recordBtn');
+    if (!isRecordingTriage) {
+      isRecordingTriage = true;
+      if (btn) btn.innerText = "Stop Recording";
+      await startAudioStreaming(websocket);
+    } else {
+      isRecordingTriage = false;
+      if (btn) btn.innerText = "Start Live Record";
+      stopAudioStreaming();
+    }
+  }
+  let mediaRecorder = null;
+  let audioChunks = [];
 
     const GOLD_STANDARD_DATASET = {
       "AGGREGATE": {

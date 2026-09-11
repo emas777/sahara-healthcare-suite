@@ -1,0 +1,31 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"corpus_name": "Sahara Code-Switch Africa Challenge - Gold Standard",
+"cases": [
+{
+"case_id": "GOLD-ETH-001",
+"patient": "Pediatric (2 Years)",
+"symptoms": [
+"Severe Cough",
+"High Fever (39.1°C)",
+"Shortness of breath"
+],
+"code_switched_verbatim": "Patient-u twin years yenebere character severe cough and fever alew for 3 days.",
+"urgency": "ESI 2 (Urgent)",
+"target_icd10": "J06.9"
+},
+{
+"case_id": "GOLD-ETH-002",
+"patient": "Adult Female (34 Years)",
+"symptoms": [
+"Abdominal Pain",
+"Nausea",
+"Dehydration",
+"Lethargy"
+],
+"code_switched_verbatim": "Legaw 3 days abdominal pain and nausea syadergew felt very weak and dizzy.",
+"urgency": "ESI 3 (Urgent)",
+"target_icd10": "A09"
+}
+]
+}

@@ -693,7 +693,7 @@
     AfriHealth AI &bull; Prepared for the Sahara Code-Switch Africa Challenge &bull; Core Engine: Intron Sahara v2.5
   </footer>
 
-  <let audioContext;
+ 
 let mediaStream;
 let workletNode;
 
@@ -729,7 +729,8 @@ function stopAudioStreaming() {
     audioContext.close();
   }
 }script>
-    let benchmarkChartInstance = null;
+   let audioContext;
+   let benchmarkChartInstance = null;
     let isRecordingTriage = false;
     let mediaRecorder = null;
     let audioChunks = [];

@@ -1,0 +1,20 @@
+{
+"name": "afrihealth-ai-suite",
+"version": "1.0.0",
+"description": "AfriHealth AI - Unified Voice Care Suite using Intron Sahara v2.5 Code-Switching Speech AI",
+"main": "index.html",
+"scripts": {
+"start": "npx serve ."
+},
+"keywords": [
+"healthcare",
+"speech-recognition",
+"intron",
+"amharic",
+"code-switching",
+"fhir",
+"pwa"
+],
+"author": "AfriHealth AI Team",
+"license": "MIT"
+}

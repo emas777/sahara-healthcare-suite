@@ -1,0 +1,55 @@
+{
+"challenge": "Sahara CodeSwitch Africa Challenge",
+"dataset": "Intron AfriHealth MultiBench v1.2",
+"evaluation_date": "2026-09-11",
+"models_evaluated": [
+{
+"model_id": "intron-sahara-v2.5",
+"name": "Intron Sahara v2.5 Clinical Engine",
+"is_primary": true,
+"metrics": {
+"nwer": 0.125,
+"cer": 0.068,
+"faas": 27.78,
+"bleu": 68.4,
+"chrf": 74.2
+},
+"code_switching_support": {
+"amharic_english": true,
+"oromoo_english": true
+}
+},
+{
+"model_id": "openai-whisper-medium",
+"name": "OpenAI Whisper Medium",
+"is_primary": false,
+"metrics": {
+"nwer": 0.342,
+"cer": 0.185,
+"faas": 14.20,
+"bleu": 41.2,
+"chrf": 52.8
+},
+"code_switching_support": {
+"amharic_english": false,
+"oromoo_english": false
+}
+},
+{
+"model_id": "meta-omnictc",
+"name": "Meta OmniCTC Pan-African ASR",
+"is_primary": false,
+"metrics": {
+"nwer": 0.289,
+"cer": 0.141,
+"faas": 18.55,
+"bleu": 49.6,
+"chrf": 58.1
+},
+"code_switching_support": {
+"amharic_english": false,
+"oromoo_english": false
+}
+}
+]
+}

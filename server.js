@@ -19,13 +19,13 @@ app.use((req, res, next) => {
 });
 
 // Secure Proxy Endpoint for Intron Voice API
-// Allows using INTRON_API_KEY from Railway Environment Variables securely on server-side
+// Allows using INTRON_API_KEY from Cloudflare Environment Variables / Secrets securely on server-side
 app.post('/api/intron/transcribe', async (req, res) => {
   const apiKey = process.env.INTRON_API_KEY || req.headers['authorization'];
   
   if (!apiKey) {
     return res.status(401).json({
-      error: 'Missing Intron API key. Please configure INTRON_API_KEY in Railway Variables.'
+      error: 'Missing Intron API key. Please configure INTRON_API_KEY in your Cloudflare Environment Variables or Secrets.'
     });
   }
 
@@ -34,7 +34,7 @@ app.post('/api/intron/transcribe', async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': apiKey.startsWith('Bearer ') ? apiKey : Bearer ${apiKey}
+        'Authorization': apiKey.startsWith('Bearer ') ? apiKey : `Bearer ${apiKey}`
       },
       body: JSON.stringify(req.body)
     });
@@ -56,7 +56,7 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(================================================);
-  console.log(🚀 AfriHealth AI Server running on port ${PORT});
-  console.log(================================================);
+  console.log('================================================');
+  console.log(`🚀 AfriHealth AI Server running on port ${PORT}`);
+  console.log('================================================');
 });
